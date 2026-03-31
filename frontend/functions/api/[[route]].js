@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { handle } from 'hono/cloudflare-pages';
+
 import { sign, verify } from 'hono/jwt';
 import bcrypt from 'bcryptjs';
 
@@ -175,4 +175,4 @@ app.put('/outpass/:id', protect, admin, async (c) => {
   }
 });
 
-export const onRequest = handle(app);
+export default app;
