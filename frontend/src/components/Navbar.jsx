@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getOutpasses } from '../api/localStorageDB';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, User, Sun, Moon, Bell, Shield, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +15,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const { data } = await axios.get('/api/outpass');
+        const { data } = await getOutpasses();
         if (user?.role === 'student') {
           const updates = data.filter(op => op.status !== 'pending').slice(0, 5);
           setNotifications(updates);

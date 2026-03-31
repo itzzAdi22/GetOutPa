@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, ShieldAlert, Users, Search, Filter, ArrowUpRight, Clock, MapPin, FileText } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { GlassCard, Button } from '../components/ui';
-import axios from 'axios';
+import { getOutpasses, updateOutpassStatus } from '../api/localStorageDB';
 import toast from 'react-hot-toast';
 import { cn } from '../utils/cn';
 
@@ -16,7 +16,7 @@ const AdminDashboard = () => {
 
   const fetchRequests = async () => {
     try {
-      const { data } = await axios.get('/api/outpass');
+      const { data } = await getOutpasses();
       setRequests(data);
     } catch (err) {
       toast.error('Failed to load outpass requests');
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
 
   const handleStatusUpdate = async (id, status) => {
     try {
-      await axios.put(`/api/outpass/${id}`, { status });
+      await updateOutpassStatus(id, status);
       toast.success(`Request ${status} successfully`);
       fetchRequests();
       setSelectedRequest(null);

@@ -4,7 +4,7 @@ import { Plus, Clock, MapPin, Search, Filter, CheckCircle, XCircle, AlertCircle,
 import Navbar from '../components/Navbar';
 import OutpassModal from '../components/OutpassModal';
 import { GlassCard, Button } from '../components/ui';
-import axios from 'axios';
+import { getOutpasses } from '../api/localStorageDB';
 import toast from 'react-hot-toast';
 import { QRCodeSVG } from 'qrcode.react';
 import { cn } from '../utils/cn';
@@ -19,7 +19,7 @@ const StudentDashboard = () => {
 
   const fetchOutpasses = async () => {
     try {
-      const { data } = await axios.get('/api/outpass');
+      const { data } = await getOutpasses();
       setOutpasses(data);
     } catch (err) {
       toast.error('Failed to load outpasses');

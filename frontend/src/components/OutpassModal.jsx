@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Calendar, Clock, Send, X } from 'lucide-react';
 import { GlassCard, Button } from './ui';
 import { Input } from './ui/Input';
-import axios from 'axios';
+import { createOutpass } from '../api/localStorageDB';
 import toast from 'react-hot-toast';
 
 const OutpassModal = ({ isOpen, onClose, onSuccess }) => {
@@ -19,7 +19,7 @@ const OutpassModal = ({ isOpen, onClose, onSuccess }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('/api/outpass', formData);
+      await createOutpass(formData);
       toast.success('Outpass request submitted successfully!');
       onSuccess?.();
       onClose();

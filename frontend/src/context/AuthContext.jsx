@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import { loginUser, registerUser } from '../api/localStorageDB';
 
 const AuthContext = createContext();
 
@@ -15,20 +15,19 @@ export const AuthProvider = ({ children }) => {
     if (token && storedUser) {
       setUser(storedUser);
       // Set axios default authorization header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      // Point to your backend API
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      const { data } = await loginUser({ email, password });
       
       setUser(data);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       
       return data;
     } catch (error) {
@@ -38,12 +37,12 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password, role) => {
     try {
-      const { data } = await axios.post('/api/auth/register', { name, email, password, role });
+      const { data } = await registerUser({ name, email, password, role });
       
       setUser(data);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       
       return data;
     } catch (error) {
@@ -55,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    // delete axios.defaults.headers.common['Authorization'];
   };
 
   return (
